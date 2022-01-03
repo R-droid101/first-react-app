@@ -5,6 +5,30 @@ import React from 'react'
 // import Details from "./Details"
 import { useState } from 'react'
 
+function History(props) {
+  console.log(props);
+
+  if(props.allClicks.length === 0)
+  return (
+    <div>
+      Get clicking!!!
+    </div>
+  )
+    else
+    return (
+      <div>{props.allClicks}</div>
+    )
+ 
+}
+
+function Button(props) {
+  return (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button> 
+  )
+}
+
 
 
 function App() {
@@ -55,17 +79,18 @@ function App() {
     setLeft(leftClick + 1);
   }
 
-  const handleRight = () => {
+  const handleRight = (e) => {
     setAll(allClicks.concat('R'));
     setRight(rightClick + 1);
+    console.log(e)
   }
   
   return(
     <div>
-      <button onClick={handleLeft}>Left</button>
-      <button onClick={handleRight}>Right</button>
+      <Button text="Left" handleClick={handleLeft} />
+      <Button text="Right" handleClick={handleRight} />
       {leftClick} {rightClick}
-      <p>{allClicks}</p>
+      <History allClicks={allClicks}/>
     </div>
   );
 }
