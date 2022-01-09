@@ -1,44 +1,53 @@
 import React, { useState } from 'react'
-import Note from './components/Note'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
-  const [newNote, setNewNote] = useState("New note added!")
-  const [showAll, setShowAll] = useState(true)
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ]) 
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [findName, setFindName] = useState('')
 
-  const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
+  const userExists= (arr, obj) => {
+    return arr.some(function (el) {
+      return el.name === obj.name;
+    });
+  }
 
-  const addNote = e => {
+  const addName = (e) => {
     e.preventDefault();
-    const noteObj = {
-      id: notes.length + 1,
-      content: newNote,
-      important: Math.random() < 0.5,
-      date: new Date().toISOString()
+    const newObject = {
+      name: newName,
+      number: newNumber,
+    };
+    if (userExists(persons, newObject)) {
+      alert(`${newName} has already been added to the phone book`);
+    } else {
+      setPersons(persons.concat(newObject));
+      setNewNumber("");
     }
-    setNotes(notes.concat(noteObj))
-    setNewNote('')
-  }
+    setNewName("");
+  };
 
-  const handleNewNote = e => {
-    setNewNote(e.target.value);
-  }
+  const searchName = e => setFindName(e.target.value)
+  const handleAddName = e => setNewName(e.target.value)
+  const handleAddNumber = e => setNewNumber(e.target.value)
 
+  
   return (
     <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>Show {showAll ? 'important' : 'all'}</button>
-      </div>
-      <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note} />
-        )}
-      </ul>
-      <form onSubmit={addNote}>
-          <input value={newNote} onChange={handleNewNote}/>
-          <button type="submit">save</button>
-      </form>
+      <h2>Phonebook</h2>
+      <Filter findName={findName} searchName={searchName}/>
+      <h2>add a new</h2>
+      <PersonForm addName={addName} newName={newName} handleAddName={handleAddName} newNumber={newNumber} handleAddNumber={handleAddNumber}/>
+      <h2>Numbers</h2>
+      <Persons findName={findName} persons={persons}/>
     </div>
   )
 }
