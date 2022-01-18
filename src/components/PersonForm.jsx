@@ -1,10 +1,6 @@
 import React from "react";
 
-
-
 function PersonForm(props) {
-  
-  
   return (
     <div>
       <form onSubmit={props.addName}>
