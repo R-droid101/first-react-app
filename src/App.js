@@ -11,10 +11,12 @@ const App = () => {
   const [findName, setFindName] = useState("");
 
   useEffect(() => {
-    pageService.retrieveData().then((contactCard) => {
-      console.log("recieving data");
-      setPersons(contactCard);
-    });
+    pageService
+      .retrieveData()
+      .then((contactCard) => {
+        setPersons(contactCard);
+      })
+      .catch(() => console.log("error"));
   }, []);
 
   const userExists = (arr, obj) => {
@@ -32,11 +34,13 @@ const App = () => {
     if (userExists(persons, newObject)) {
       alert(`${newName} has already been added to the phone book`);
     } else {
-      pageService.add(newObject).then((newContact) => {
-        console.log("Posting data to server");
-        setPersons(persons.concat(newContact));
-        setNewNumber("");
-      });
+      pageService
+        .add(newObject)
+        .then((newContact) => {
+          setPersons(persons.concat(newContact));
+          setNewNumber("");
+        })
+        .catch(() => console.log("error"));
     }
     setNewName("");
   };
@@ -58,7 +62,7 @@ const App = () => {
         handleAddNumber={handleAddNumber}
       />
       <h2>Numbers</h2>
-      <Persons findName={findName} persons={persons} />
+      <Persons findName={findName} persons={persons} setPersons={setPersons} />
     </div>
   );
 };
