@@ -20,9 +20,7 @@ const App = () => {
   }, []);
 
   const userExists = (arr, obj) => {
-    return arr.some(function (el) {
-      return el.name === obj.name;
-    });
+    return arr.some((el) => el.name === obj.name);
   };
 
   const addName = (e) => {
@@ -31,8 +29,12 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    if (userExists(persons, newObject)) {
-      alert(`${newName} has already been added to the phone book`);
+
+    let id = userExists(persons, newObject);
+    if (id > 0) {
+      if(window.confirm("Do you want to replace the old number with the new number?")) {
+        pageService.update(id, newObject)
+      }
     } else {
       pageService
         .add(newObject)

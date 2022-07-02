@@ -10,7 +10,7 @@ function PersonForm(props) {
             value={props.newName}
             onChange={props.handleAddName}
             type="text"
-            placeholder="type name..."
+            placeholder="type name..." 
           />
         </div>
         <div>

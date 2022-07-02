@@ -13,6 +13,10 @@ const edit = (contact) => {
     .catch(() => console.log("error"));
 };
 
-const services = { retrieveData, add, edit };
+const update = (contact, newObject) => {
+  axios.put(`${url}/${contact}`, newObject).then(response => response.data).catch(() => console.log('error'))
+}
+
+const services = { retrieveData, add, edit, update };
 
 export default services;
